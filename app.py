@@ -72,28 +72,57 @@ def save_results(results):
         print("Invalid format. Please try again.")
 
 # Function to calculate recommended daily intake based on user info
+def calculate_bmr(weight, height, age, gender):
+    if gender == 'male':
+        return 10 * weight + 6.25 * height - 5 * age + 5
+    elif gender == 'female':
+        return 10 * weight + 6.25 * height - 5 * age - 161
+
+def calculate_tdee(bmr, activity_level):
+    activity_factors = {
+        'sedentary': 1.2,
+        'light': 1.375,
+        'moderate': 1.55,
+        'active': 1.725,
+        'very active': 1.9
+    }
+    return bmr * activity_factors.get(activity_level, 1.2)
+
+def recommended_macros(tdee):
+    # Macronutrient distribution percentages
+    carb_ratio = (45, 65)
+    protein_ratio = (10, 35)
+    fat_ratio = (20, 35)
+
+    carbs = [(tdee * percent / 100) / 4 for percent in carb_ratio]  # 4 kcal per gram of carbs
+    protein = [(tdee * percent / 100) / 4 for percent in protein_ratio]  # 4 kcal per gram of protein
+    fat = [(tdee * percent / 100) / 9 for percent in fat_ratio]  # 9 kcal per gram of fat
+
+    return {
+        "carbs": carbs,
+        "protein": protein,
+        "fat": fat
+    }
+
 def calculate_recommended_intake():
     try:
         age = int(input("Enter your age: "))
         weight = float(input("Enter your weight (kg): "))
-        activity_level = input("Enter your activity level (low, moderate, high): ").lower()
+        height = float(input("Enter your height (cm): "))
+        gender = input("Enter your gender (male/female): ").lower()
+        activity_level = input("Enter your activity level (sedentary, light, moderate, active, very active): ").lower()
 
-        # Basic recommended intake estimates (can be improved for more accuracy)
-        if activity_level == "low":
-            calories = 2000
-            protein = weight * 0.8  # grams per kg
-        elif activity_level == "moderate":
-            calories = 2500
-            protein = weight * 1.0
-        else:
-            calories = 3000
-            protein = weight * 1.2
+        bmr = calculate_bmr(weight, height, age, gender)
+        tdee = calculate_tdee(bmr, activity_level)
+        macros = recommended_macros(tdee)
 
         print(f"\nRecommended daily intake based on your profile:")
-        print(f"Calories: {calories} kcal")
-        print(f"Protein: {protein:.2f} g\n")
+        print(f"Calories: {tdee:.2f} kcal")
+        print(f"Carbohydrates: {macros['carbs'][0]:.2f}g - {macros['carbs'][1]:.2f}g")
+        print(f"Protein: {macros['protein'][0]:.2f}g - {macros['protein'][1]:.2f}g")
+        print(f"Fat: {macros['fat'][0]:.2f}g - {macros['fat'][1]:.2f}g\n")
     except ValueError:
-        print("Invalid input. Please enter numeric values for age and weight.")
+        print("Invalid input. Please enter valid numeric values.")
 
 # Main loop with menu options
 results = []
