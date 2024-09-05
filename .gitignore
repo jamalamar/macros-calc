@@ -1,0 +1,19 @@
+# Ignore environment variable files
+.env
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environments
+venv/
+.env/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE and editor files
+.idea/
+.vscode/
