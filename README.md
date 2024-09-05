@@ -8,6 +8,11 @@ This Python-based command-line app allows users to search for food items, retrie
 - Save search results as CSV or JSON.
 - Compare nutritional intake with recommended daily values.
 
+## What’s New:
+1.	BMR Calculation: Uses the Mifflin-St Jeor equation to calculate BMR based on weight, height, age, and gender.
+2.	TDEE Calculation: Adjusts BMR by an activity multiplier.
+3.	Macronutrient Calculation: Provides personalized macronutrient ranges (carbs, protein, fat) based on TDEE.
+
 ## Requirements
 - Python 3.x
 - `requests` library
