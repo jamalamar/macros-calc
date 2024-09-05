@@ -164,14 +164,44 @@ def main():
 
         # Option 2: Search for multiple food items
         elif choice == '2':
-            combined_macros = {key: 0 for key in ["carbs", "protein", "fat", "calories", "fiber", "quantity"]}  # Initialize combined macros
-            num_items = int(input("How many food items would you like to search? "))  # Get number of items to search
+            combined_macros = {key: 0 for key in ["carbs", "protein", "fat", "calories", "fiber", "quantity"]}
+            num_items = int(input("How many food items would you like to search? "))
             for _ in range(num_items):
-                food = input("Enter the food item: ")  # Input food item
-                quantity_str = input("Enter the quantity (in grams): ")  # Input quantity
+                food = input("Enter the food item: ")
+                quantity_str = input("Enter the quantity (in grams): ")
 
                 try:
-                    quantity = float(quantity_str)  # Convert quantity to float
+                    quantity = float(quantity_str)
                     if quantity <= 0:
-                        raise ValueError("Quantity must be a positive number.")  # Ensure quantity is positive
-                except Value
+                        raise ValueError("Quantity must be a positive number.")
+                except ValueError as e:
+                    print(f"Invalid quantity input: {e}")
+                    continue
+
+                macros = fetch_from_usda(food, quantity)
+                if macros:
+                    for key in combined_macros:
+                        combined_macros[key] += macros[key]
+
+            print(f"\nCombined Macros for {num_items} food items:")
+            for key in combined_macros:
+                print(f"  {key.capitalize()}: {combined_macros[key]}g")
+
+        elif choice == '3':
+            if results:
+                save_results(results)
+            else:
+                print("No results to save. Search for food items first.")
+
+        elif choice == '4':
+            calculate_recommended_intake()
+
+        elif choice == '5':
+            print("Exiting the program. Goodbye!")
+            break
+
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
