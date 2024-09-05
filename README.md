@@ -22,7 +22,7 @@ This Python-based command-line app allows users to search for food items, retrie
 
 2. Navigate to the project directory:
    ```bash
-   cd nutrition-app
+   cd macros-calc
    ```
 
 3. Install dependencies:
